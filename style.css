@@ -1,3 +1,17 @@
 html {
     text-align: center;
 }
+
+h4 {
+    border-bottom: 1px solid;
+}
+
+.row {
+    border: 1px solid ;
+    margin: 20px;
+    justify-content: center;
+}
+
+.container {
+    margin-top: 25px;
+}
