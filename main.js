@@ -1,6 +1,6 @@
 //main div 
 let main = document.getElementById("main");
-
+let saveCounter = null;
 //state object
 let app = {
     data: {},
@@ -12,6 +12,11 @@ let app = {
 
 //function for page load
 function init() {
+    saveCounter = localStorage.getItem(saveCounter)
+    if (saveCounter == null) {
+        saveCounter = 0;
+        localStorage.setItem("saveCounter", saveCounter)
+    }
     //create header
     const header = document.createElement("h1");
     header.textContent = "Weather App";
@@ -20,6 +25,7 @@ function init() {
     //create input field
     const input = document.createElement("input");
     input.setAttribute("type", "number");
+    input.setAttribute("placeholder", "Zip code");
     main.append(input);
 
     //create button
@@ -27,6 +33,18 @@ function init() {
     btn.textContent = "Get Weather"
     btn.style.background = "turquoise"
     main.append(btn);
+
+    //create autoLocate button
+    const btn2 = document.createElement("button");
+    btn2.textContent = "GPS"
+    btn2.style.background = "turquoise"
+    main.append(btn2);
+
+    //create Save button
+    const btn3 = document.createElement("button");
+    btn3.textContent = "Save Location"
+    btn3.style.background = "turquoise"
+    main.append(btn3);
 
     //create container
     const display = document.createElement("div")
@@ -125,7 +143,7 @@ function errorPage() {
 }
 
 // self explanatory 
-function apiCall(zip,lat,lon) {
+function apiCall(zip, lat, lon) {
     let options = {
         baseURL: "https://api.openweathermap.org/data/2.5",
         params: {
@@ -161,7 +179,7 @@ function autoLocate() {
     navigator.geolocation.getCurrentPosition((position) => {
         long = position.coords.longitude;
         lat = position.coords.latitude;
-        apiCall(undefined,lat,long)
+        apiCall(undefined, lat, long)
         // console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=0d1e898c01510df0c5e8eab9ad775a46`);
     })
 }
@@ -169,8 +187,39 @@ function autoLocate() {
 init();
 autoLocate();
 const input = document.querySelector("input");
-const btn = document.querySelector("button");
+const btns = document.querySelectorAll("button");
 const contain = document.querySelector(".row");
-btn.addEventListener("click", () => {
+btns[0].addEventListener("click", () => {
     apiCall(input.value, undefined, undefined);
 })
+btns[1].addEventListener("click", () => {
+    autoLocate();
+})
+btns[2].addEventListener("click", () => {
+    //save function;
+})
+
+
+
+//ADD button for saving location to localStorage,maybe those locations go under the currently displayed weather even if they are the same
+//maybe clone the city/temp/condition/other using the state object?
+//clone the overall DOM row but the variables within them get saved to storage 
+//append another row for each saved location
+//add a delete button for each location to remove from localStorage
+//HAVE to use JSON.stringify and JSON.parse because you can only store strings in local storage
+// TODO: ADD a delete button that goes after each saved city data
+// TODO: connect save button with saveLoc function
+function saveLoc() {
+
+    
+    localStorage.setItem(saveCounter, JSON.stringify({
+        city: app.city,
+        conditions: app.conditions,
+        temp: app.temp,
+        other: `https://openweathermap.org/img/wn/${app.other}@2x.png`,
+    }))
+    main.append(contain.cloneNode(true));
+    saveCounter++;
+}
+//TO retrieve local storage item
+//console.log(  JSON.parse(localStorage.getItem(0)  ))
