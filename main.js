@@ -31,7 +31,8 @@ function init() {
 
     //create container
     const display = document.createElement("div")
-    display.setAttribute("class", "container")
+    display.setAttribute("class", "row border-0")
+
     main.append(display)
 }
 
@@ -44,7 +45,7 @@ function makePage() {
 
     //create city row
     const city = document.createElement("div")
-    city.setAttribute("class", "row")
+    city.setAttribute("class", "col-md-3")
     //create header
     const cityhead = document.createElement("h4");
     cityhead.textContent = "City";
@@ -59,7 +60,7 @@ function makePage() {
 
     //create temp row
     const temp = document.createElement("div")
-    temp.setAttribute("class", "row")
+    temp.setAttribute("class", "col-md-3")
     //temp header
     const temphead = document.createElement("h4");
     temphead.textContent = "Temperature";
@@ -74,7 +75,7 @@ function makePage() {
 
     //create condition row
     const cond = document.createElement("div")
-    cond.setAttribute("class", "row")
+    cond.setAttribute("class", "col-md-3")
     //cond header
     const condhead = document.createElement("h4");
     condhead.textContent = "Condition";
@@ -88,7 +89,7 @@ function makePage() {
 
 
     const other = document.createElement("div")
-    other.setAttribute("class", "row")
+    other.setAttribute("class", "col-md-3")
     //other header
     const otherhead = document.createElement("h4");
     otherhead.textContent = "Other Info";
@@ -154,7 +155,7 @@ function apiCall(zip) {
 init()
 const input = document.querySelector("input");
 const btn = document.querySelector("button");
-const contain = document.querySelector(".container");
+const contain = document.querySelector(".row");
 btn.addEventListener("click", () => {
     apiCall(input.value);
 })
