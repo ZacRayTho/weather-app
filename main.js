@@ -20,6 +20,7 @@ function init() {
     //create input field
     const input = document.createElement("input");
     input.setAttribute("type", "number");
+    input.setAttribute("placeholder", "Zip code");
     main.append(input);
 
     //create button
@@ -27,6 +28,12 @@ function init() {
     btn.textContent = "Get Weather"
     btn.style.background = "turquoise"
     main.append(btn);
+
+    //create autoLocate button
+    const btn2 = document.createElement("button");
+    btn2.textContent = "GPS"
+    btn2.style.background = "turquoise"
+    main.append(btn2);
 
     //create container
     const display = document.createElement("div")
@@ -169,8 +176,11 @@ function autoLocate() {
 init();
 autoLocate();
 const input = document.querySelector("input");
-const btn = document.querySelector("button");
+const btns = document.querySelectorAll("button");
 const contain = document.querySelector(".row");
-btn.addEventListener("click", () => {
+btns[0].addEventListener("click", () => {
     apiCall(input.value, undefined, undefined);
+})
+btns[1].addEventListener("click", () => {
+    autoLocate();
 })
