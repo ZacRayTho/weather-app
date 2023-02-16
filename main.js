@@ -41,6 +41,7 @@ function makePage() {
     //clear container of previous searches
     contain.innerHTML = "";
 
+
     //create city row
     const city = document.createElement("div")
     city.setAttribute("class", "row")
@@ -54,6 +55,7 @@ function makePage() {
     citytext.textContent = app.city
     city.appendChild(citytext)
     contain.append(city)
+
 
     //create temp row
     const temp = document.createElement("div")
@@ -69,6 +71,7 @@ function makePage() {
     temp.appendChild(temptext)
     contain.appendChild(temp)
 
+
     //create condition row
     const cond = document.createElement("div")
     cond.setAttribute("class", "row")
@@ -82,6 +85,7 @@ function makePage() {
     condtext.textContent = app.conditions;
     cond.appendChild(condtext)
     contain.appendChild(cond)
+
 
     const other = document.createElement("div")
     other.setAttribute("class", "row")
@@ -99,7 +103,25 @@ function makePage() {
 
 //make error page
 function errorPage() {
-    contain.innerHTML = ""
+    
+
+    //clear container of previous searches
+    contain.innerHTML = "";
+
+
+    //create ERROR row
+    const err = document.createElement("div")
+    err.setAttribute("class", "row")
+    //create header
+    const errhead = document.createElement("h4");
+    errhead.textContent = "ERROR 404";
+    errhead.style.background = "orange";
+    err.appendChild(errhead)
+    //create another row for text because textcontent clears all children of city div
+    const errtext = document.createElement("h6");
+    errtext.textContent = "Make sure zip code is only 5 numbers and valid!"
+    err.appendChild(errtext)
+    contain.append(err)
 
 
 }
@@ -124,7 +146,7 @@ function apiCall(zip) {
             makePage();
         })
         .catch(function (error) {
-            console.log(error);
+            console.log("FAILURE HERE " + error);
             errorPage();
         })
 }
