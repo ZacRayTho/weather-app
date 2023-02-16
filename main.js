@@ -8,7 +8,6 @@ let app = {
     conditions: undefined,
     temp: undefined,
     other: undefined,
-    shown: false,
 };
 
 //function for page load
@@ -104,11 +103,9 @@ function makePage() {
 
 //make error page
 function errorPage() {
-    
 
     //clear container of previous searches
     contain.innerHTML = "";
-
 
     //create ERROR row
     const err = document.createElement("div")
@@ -128,12 +125,13 @@ function errorPage() {
 }
 
 // self explanatory 
-function apiCall(zip) {
+function apiCall(zip,lat,lon) {
     let options = {
         baseURL: "https://api.openweathermap.org/data/2.5",
         params: {
             zip: zip,
-            // nat: "us", country code optional??
+            lat: lat,
+            lon: lon,
             appid: "0d1e898c01510df0c5e8eab9ad775a46",
         }
     }
@@ -142,7 +140,7 @@ function apiCall(zip) {
             console.log(response);
             app.city = response.data.name;
             app.conditions = response.data.weather[0].description;
-            app.temp = Math.floor(response.data.main.temp * 9/5 - 459.67) + '℉';
+            app.temp = Math.floor(response.data.main.temp * 9 / 5 - 459.67) + '℉';
             app.other = response.data.weather[0].icon;
             makePage();
         })
@@ -152,11 +150,27 @@ function apiCall(zip) {
         })
 }
 
-init()
+//using html geolocation to get position via latitude and longitude
+function autoLocate() {
+    //getCurrentPosition retrieves the longitude and latitude but passes it to the callback function it receives
+    //also is an API and returns either success or error like axios (AHA?)
+    //making the function inline and also an anonymous function with arrow syntax and getCurrentFunction is passing  its results to position variable
+    //also GetCurrentPosition is asynchronous so have to wait for the '.catch' to call the weather API
+    let lat;
+    let long;
+    navigator.geolocation.getCurrentPosition((position) => {
+        long = position.coords.longitude;
+        lat = position.coords.latitude;
+        apiCall(undefined,lat,long)
+        // console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=0d1e898c01510df0c5e8eab9ad775a46`);
+    })
+}
+
+init();
+autoLocate();
 const input = document.querySelector("input");
 const btn = document.querySelector("button");
 const contain = document.querySelector(".row");
 btn.addEventListener("click", () => {
-    apiCall(input.value);
+    apiCall(input.value, undefined, undefined);
 })
-
