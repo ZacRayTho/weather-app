@@ -12,7 +12,7 @@ let app = {
 
 //function for page load
 function init() {
-    saveCounter = localStorage.getItem(saveCounter)
+    saveCounter = localStorage.getItem("saveCounter")
     if (saveCounter == null) {
         saveCounter = 0;
         localStorage.setItem("saveCounter", saveCounter)
@@ -196,7 +196,7 @@ btns[1].addEventListener("click", () => {
     autoLocate();
 })
 btns[2].addEventListener("click", () => {
-    //save function;
+    saveLoc();
 })
 
 
@@ -209,17 +209,23 @@ btns[2].addEventListener("click", () => {
 //HAVE to use JSON.stringify and JSON.parse because you can only store strings in local storage
 // TODO: ADD a delete button that goes after each saved city data
 // TODO: connect save button with saveLoc function
+//append a new clone and then change the innerHTML with that from the local storage
+//be sure to pass into local storage innerHTML
+//on page load FOR LOOP to append the correct amount of rows than using local storage numbers change the correct row index's innerhtml to local storage with corresponding index
 function saveLoc() {
-
-    
+    //swap this over to something like the z and y below it
     localStorage.setItem(saveCounter, JSON.stringify({
         city: app.city,
         conditions: app.conditions,
         temp: app.temp,
         other: `https://openweathermap.org/img/wn/${app.other}@2x.png`,
     }))
+    z = contain.cloneNode(true);
+    y = z.innerHTML;
+    localStorage.setItem("bob", JSON.stringify(y))
     main.append(contain.cloneNode(true));
     saveCounter++;
+    localStorage.setItem("saveCounter", saveCounter)
 }
 //TO retrieve local storage item
-//console.log(  JSON.parse(localStorage.getItem(0)  ))
+//console.log(  JSON.parse(localStorage.getItem(0))   )
