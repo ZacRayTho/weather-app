@@ -14,7 +14,7 @@ let app = {
 function init() {
     saveCounter = localStorage.getItem("saveCounter")
     if (saveCounter == null) {
-        saveCounter = 0;
+        saveCounter = 1;
         localStorage.setItem("saveCounter", saveCounter)
     }
     //create header
