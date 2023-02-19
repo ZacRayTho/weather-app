@@ -14,7 +14,7 @@ let app = {
 function init() {
     saveCounter = localStorage.getItem("saveCounter")
     if (saveCounter == null) {
-        saveCounter = 0;
+        saveCounter = 1;
         localStorage.setItem("saveCounter", saveCounter)
     }
     //create header
@@ -57,7 +57,7 @@ function init() {
 function makePage() {
 
     //clear container of previous searches
-    contain.innerHTML = "";
+    contain[0].innerHTML = "";
 
 
     //create city row
@@ -72,7 +72,7 @@ function makePage() {
     const citytext = document.createElement("h6");
     citytext.textContent = app.city
     city.appendChild(citytext)
-    contain.append(city)
+    contain[0].append(city)
 
 
     //create temp row
@@ -87,7 +87,7 @@ function makePage() {
     const temptext = document.createElement("h6");
     temptext.textContent = app.temp
     temp.appendChild(temptext)
-    contain.appendChild(temp)
+    contain[0].appendChild(temp)
 
 
     //create condition row
@@ -102,7 +102,7 @@ function makePage() {
     const condtext = document.createElement("h6");
     condtext.textContent = app.conditions;
     cond.appendChild(condtext)
-    contain.appendChild(cond)
+    contain[0].appendChild(cond)
 
 
     const other = document.createElement("div")
@@ -116,14 +116,14 @@ function makePage() {
     const othertext = document.createElement("img");
     othertext.setAttribute("src", `https://openweathermap.org/img/wn/${app.other}@2x.png`)
     other.appendChild(othertext)
-    contain.appendChild(other)
+    contain[0].appendChild(other)
 }
 
 //make error page
 function errorPage() {
 
     //clear container of previous searches
-    contain.innerHTML = "";
+    contain[0].innerHTML = "";
 
     //create ERROR row
     const err = document.createElement("div")
@@ -137,7 +137,7 @@ function errorPage() {
     const errtext = document.createElement("h6");
     errtext.textContent = "Make sure zip code is only 5 numbers and valid!"
     err.appendChild(errtext)
-    contain.append(err)
+    contain[0].append(err)
 
 
 }
@@ -188,7 +188,7 @@ init();
 autoLocate();
 const input = document.querySelector("input");
 const btns = document.querySelectorAll("button");
-const contain = document.querySelector(".row");
+let contain = document.querySelectorAll(".row");
 btns[0].addEventListener("click", () => {
     apiCall(input.value, undefined, undefined);
 })
@@ -198,6 +198,8 @@ btns[1].addEventListener("click", () => {
 btns[2].addEventListener("click", () => {
     saveLoc();
 })
+
+
 
 
 
@@ -214,18 +216,34 @@ btns[2].addEventListener("click", () => {
 //on page load FOR LOOP to append the correct amount of rows than using local storage numbers change the correct row index's innerhtml to local storage with corresponding index
 function saveLoc() {
     //swap this over to something like the z and y below it
-    localStorage.setItem(saveCounter, JSON.stringify({
-        city: app.city,
-        conditions: app.conditions,
-        temp: app.temp,
-        other: `https://openweathermap.org/img/wn/${app.other}@2x.png`,
-    }))
-    z = contain.cloneNode(true);
+    z = contain[0].cloneNode(true);
     y = z.innerHTML;
-    localStorage.setItem("bob", JSON.stringify(y))
-    main.append(contain.cloneNode(true));
+    localStorage.setItem(saveCounter, y)
+    
+    // localStorage.setItem("bob", JSON.stringify(y))
+    // main.append(contain.cloneNode(true));
+    main.append(contain[0].cloneNode());
+    contain = document.querySelectorAll(".row");
+    contain[saveCounter].innerHTML = localStorage.getItem(saveCounter)
+    contain[saveCounter].setAttribute("id", saveCounter)
+    let del = document.createElement("button")
+    del.innerHTML = "Delete"
+    del.style.width = "200px"
+    del.style.height = "50px"
+    del.addEventListener("click", ()=>{
+        localStorage.removeItem(del.parentElement.id)
+        del.parentElement.remove()
+    })
+    contain[saveCounter].appendChild(del)
     saveCounter++;
     localStorage.setItem("saveCounter", saveCounter)
 }
 //TO retrieve local storage item
 //console.log(  JSON.parse(localStorage.getItem(0))   )
+
+// {
+//     city: app.city,
+//     conditions: app.conditions,
+//     temp: app.temp,
+//     other: `https://openweathermap.org/img/wn/${app.other}@2x.png`,
+// }
